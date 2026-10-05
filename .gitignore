@@ -1,0 +1,14 @@
+# Enunciados del profesor (solo locales)
+*.docx
+*.pptx
+~$*
+
+# Node / builds
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Secretos
+.env
+serviceAccountKey.json
+*.db
