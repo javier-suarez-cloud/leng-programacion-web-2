@@ -1,0 +1,135 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #1f2937;
+  background: #f3f4f6;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+
+/* ===== Estilos Actividad 11 ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 7%;
+  background: #174a7e;
+  color: white;
+}
+
+.navbar nav {
+  display: flex;
+  gap: 18px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+}
+
+.navbar a.router-link-active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.pagina {
+  width: min(1100px, 92%);
+  margin: 32px auto;
+}
+
+.hero {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 40px 8%;
+}
+
+.filtros {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.detalle-producto {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.detalle-producto img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.formulario {
+  display: grid;
+  gap: 10px;
+  max-width: 650px;
+}
+
+.formulario input,
+.formulario textarea,
+.formulario select {
+  padding: 10px;
+}
+
+.error { color: #b42318; }
+.correcto { color: #18794e; }
+
+@media (max-width: 700px) {
+  .navbar {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .detalle-producto {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Estilos propios para la tarjeta de producto y el botón de inicio */
+.producto-card {
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+.producto-card img { width: 100%; height: 170px; object-fit: cover; display: block; }
+.contenido-producto { display: grid; gap: 6px; padding: 14px; }
+.contenido-producto h3, .contenido-producto p { margin: 0; }
+.categoria { color: #1d4ed8; font-size: .8rem; font-weight: 700; }
+.acciones { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+.acciones button { border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 10px; background: white; }
+.boton-principal {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: #174a7e;
+  color: white;
+  text-decoration: none;
+}
+footer { padding: 20px; text-align: center; color: #64748b; }
+
+/* Actividad 13: mensaje cuando la API no responde */
+.error-api {
+  padding: 16px;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  background: #fef2f2;
+  color: #b42318;
+}
+.error-api button { margin-top: 8px; padding: 8px 14px; border: 0; border-radius: 8px; background: #b42318; color: white; }
