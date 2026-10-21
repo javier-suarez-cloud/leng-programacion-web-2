@@ -5,10 +5,15 @@ import { productos } from '../data/productos'
 
 const buscar = ref('')
 const categoria = ref('Todas')
+const comuna = ref('Todas') // Desafío: filtro por comuna
 const favoritos = ref([])
 
 const categorias = computed(() => {
   return ['Todas', ...new Set(productos.map(p => p.categoria))]
+})
+
+const comunas = computed(() => {
+  return ['Todas', ...new Set(productos.map(p => p.comuna))]
 })
 
 const productosFiltrados = computed(() => {
@@ -21,7 +26,11 @@ const productosFiltrados = computed(() => {
       categoria.value === 'Todas' ||
       producto.categoria === categoria.value
 
-    return coincideTexto && coincideCategoria
+    const coincideComuna =
+      comuna.value === 'Todas' ||
+      producto.comuna === comuna.value
+
+    return coincideTexto && coincideCategoria && coincideComuna
   })
 })
 
@@ -51,6 +60,12 @@ onMounted(() => {
       <select v-model="categoria">
         <option v-for="cat in categorias" :key="cat">
           {{ cat }}
+        </option>
+      </select>
+
+      <select v-model="comuna">
+        <option v-for="c in comunas" :key="c">
+          {{ c }}
         </option>
       </select>
     </div>
