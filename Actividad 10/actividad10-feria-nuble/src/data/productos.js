@@ -1,6 +1,7 @@
 import imgQueso from '../assets/img/quesos-chillan.jpg'
 import imgMiel from '../assets/img/miel-chillan.jpg'
 import imgTejidos from '../assets/img/tejidos-chillan.jpg'
+import imgGreda from '../assets/img/greda-quinchamali.jpg'
 
 export const productos = [
   {
@@ -26,5 +27,13 @@ export const productos = [
     categoria: 'Textil',
     imagen: imgTejidos,
     descripcion: 'Poncho de lana natural, tejido a telar por artesanas de la zona.'
+  },
+  {
+    id: 4,
+    nombre: 'Chanchito de greda de Quinchamalí',
+    precio: 8000,
+    categoria: 'Artesanía',
+    imagen: imgGreda,
+    descripcion: 'Pieza de greda negra con decoración blanca, típica de la alfarería de Quinchamalí.'
   }
 ]
