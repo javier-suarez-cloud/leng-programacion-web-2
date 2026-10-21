@@ -16,6 +16,9 @@ Repositorio de las actividades de la asignatura. Cada actividad tiene **su propi
 | `Actividad 9` | `actividad-9` | Formularios, v-model y validación |
 | `Actividad 10` | `actividad-10` | Sitio completo Vue: Feria Artesanal de Ñuble |
 | `Actividad 11` | `actividad-11` | SPA con Vue Router y favoritos |
+| `Actividad 12` | `actividad-12` | Vue + Docker + Nginx |
+| `Actividad 13` | `actividad-13` | Vue conectado a una API REST NestJS |
+| `Actividad 14` | `actividad-14` | Proyecto completo Vue + NestJS + MySQL |
 | `Trabajo 1` | `trabajo-1` | Evaluación práctica NestJS |
 
 ## Flujo de trabajo
