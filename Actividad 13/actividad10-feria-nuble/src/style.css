@@ -135,3 +135,4 @@ footer { padding: 20px; text-align: center; color: #64748b; }
 .error-api button { margin-top: 8px; padding: 8px 14px; border: 0; border-radius: 8px; background: #b42318; color: white; }
 .formulario { margin-bottom: 24px; padding: 16px; border: 1px solid #e5e7eb; border-radius: 12px; background: white; }
 .formulario h2 { margin: 0; }
+.total-api { margin: 0 0 8px; color: #475569; }

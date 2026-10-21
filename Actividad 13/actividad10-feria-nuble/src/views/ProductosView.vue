@@ -89,6 +89,12 @@ onMounted(() => {
     </div>
 
     <div v-else>
+      <!-- Desafío: cantidad total de productos recibidos desde la API -->
+      <p class="total-api">
+        Productos recibidos desde la API: <strong>{{ productos.length }}</strong>
+        · Mostrando: <strong>{{ productosFiltrados.length }}</strong>
+      </p>
+
       <div class="filtros">
         <input v-model="buscar" placeholder="Buscar producto..." />
 
