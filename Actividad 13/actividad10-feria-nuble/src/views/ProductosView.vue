@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import ProductoCard from '../components/ProductoCard.vue'
+import NuevoProducto from '../components/NuevoProducto.vue'
 
 const productos = ref([])
 const cargando = ref(true)
@@ -77,6 +78,8 @@ onMounted(() => {
 <template>
   <section class="pagina">
     <h1>Catálogo</h1>
+
+    <NuevoProducto @creado="cargarProductos" />
 
     <p v-if="cargando">Cargando productos...</p>
 
