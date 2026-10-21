@@ -1,70 +1,73 @@
-# Feria Artesanal de Ñuble
+# Actividad 12 - Vue + Docker + Nginx
 
-## Actividad 11 - Vue Router
+## Objetivo
+Contenerizar la SPA Feria Artesanal de Ñuble (Actividad 11) y servirla con Nginx.
 
-En esta actividad se transformó el proyecto Feria Artesanal de Ñuble
-en una SPA utilizando Vue Router.
-
-### Funcionalidades
-- Navegación mediante RouterLink.
-- Rutas para Inicio, Productos, Favoritos y Contacto.
-- Ruta dinámica para detalle de producto.
-- Página 404.
-- Filtro de productos.
-- Componentes reutilizables.
-- Props y emit.
-- Favoritos persistentes mediante localStorage.
-
-### Tecnologías
-- Vue 3
-- Vite
-- Vue Router
-- JavaScript
-- CSS
-- localStorage
-
-### Rutas
-| Ruta | Vista |
-|---|---|
-| `/` | Inicio |
-| `/productos` | Catálogo con buscador, filtro por categoría y por comuna |
-| `/productos/:id` | Detalle del producto |
-| `/favoritos` | Productos marcados como favoritos |
-| `/contacto` | Formulario de contacto con validación |
-| Otra ruta | Página 404 |
-
-### Cómo ejecutarlo
+## Construir imagen
 ```bash
-npm install
-npm run dev
+docker build -t feria-nuble-vue:1.0.0 .
 ```
 
-### Estructura
-- `src/router/index.js`: define las rutas y crea el router con `createWebHistory`.
-- `src/components/Navbar.vue`: menú con `RouterLink`.
-- `src/components/ProductoCard.vue`: tarjeta que recibe `producto` y `favorito` por props y emite `cambiar-favorito`.
-- `src/views/`: una vista por ruta (Inicio, Productos, Detalle, Favoritos, Contacto, 404).
-- `src/data/productos.js`: datos del catálogo; las imágenes están en `public/img`.
+## Ejecutar
+```bash
+docker run -d --name feria-nuble-web -p 8080:80 feria-nuble-vue:1.0.0
+```
 
-### Desafío individual: filtro por comuna
-- **Archivo modificado:** `src/views/ProductosView.vue`.
-- **Comportamiento agregado:** un segundo `<select>` con las comunas, calculadas automáticamente con
-  `computed` a partir de los productos. El listado se filtra por texto, categoría **y** comuna al mismo tiempo.
-- **Cómo se verificó:** al elegir "San Carlos" solo aparece la mermelada; combinado con la categoría
-  "Alimentos" se mantiene la intersección; con "Todas" vuelven los 4 productos.
+## Abrir
+http://localhost:8080
 
-### Pruebas realizadas
-1. `/` muestra Inicio. ✔
-2. `/productos` muestra el catálogo. ✔
-3. El buscador filtra por nombre. ✔
-4. El selector de categorías filtra correctamente. ✔
-5. "Ver detalle" abre `/productos/:id` con el producto correspondiente. ✔
-6. Un producto inexistente (`/productos/99`) muestra "Producto no encontrado". ✔
-7. Un favorito se mantiene después de actualizar el navegador. ✔
-8. `/favoritos` muestra solo los productos seleccionados. ✔
-9. Se puede quitar un favorito desde la vista de favoritos. ✔
-10. El formulario de contacto impide enviar campos vacíos. ✔
-11. Una dirección inexistente muestra la página 404. ✔
+## Rutas verificadas
+- /
+- /productos
+- /productos/1
+- /favoritos
+- /contacto
+- /ruta-que-no-existe
+
+## Logs
+```bash
+docker logs feria-nuble-web
+docker logs -f feria-nuble-web   # en tiempo real (Ctrl + C para salir)
+```
+
+## Detener
+```bash
+docker stop feria-nuble-web
+```
+
+## Archivos Docker
+- **Dockerfile**: construcción en dos etapas (*multi-stage*).
+  - Etapa `build` (`node:22-alpine`): instala dependencias con `npm ci` y ejecuta `npm run build`, que genera `dist/`.
+  - Etapa `production` (`nginx:alpine`): copia solo `dist/` con `COPY --from=build` y la sirve con Nginx en el puerto 80.
+  La imagen final no lleva Node.js, npm ni el código fuente: solo Nginx y los archivos compilados.
+- **.dockerignore**: evita copiar al contexto de construcción `node_modules`, `dist`, `.git`, logs y archivos `.env`.
+- **nginx.conf**: configura Nginx con `try_files $uri $uri/ /index.html`. Si la URL no corresponde a un
+  archivo físico (por ejemplo `/productos/1`), Nginx devuelve `index.html` y Vue Router muestra la vista correcta.
+  Sin esta regla, actualizar el navegador en una ruta interna daría error 404 de Nginx.
+
+## Pruebas funcionales (sobre el contenedor)
+| Prueba | Acción | Resultado |
+|---|---|---|
+| P1 | Abrir http://localhost:8080 | Carga Inicio ✔ |
+| P2 | Ir a /productos | Muestra el catálogo ✔ |
+| P3 | Abrir /productos/1 | Muestra Miel de Las Trancas ✔ |
+| P4 | Actualizar estando en /productos/1 | Sigue funcionando, Nginx no da 404 ✔ |
+| P5 | Agregar un favorito y actualizar | El favorito permanece (localStorage) ✔ |
+| P6 | Abrir /favoritos | Solo aparece el producto seleccionado ✔ |
+| P7 | Enviar /contacto vacío | Muestra "Debe completar todos los campos." ✔ |
+| P8 | Abrir /ruta-que-no-existe | Muestra la vista 404 de Vue ✔ |
+
+## Administración del contenedor
+```bash
+docker exec -it feria-nuble-web sh      # entrar al contenedor
+ls -la /usr/share/nginx/html            # archivos publicados (index.html, assets, img)
+cat /etc/nginx/conf.d/default.conf      # configuración con try_files
+docker stop / start / restart feria-nuble-web
+docker ps -a
+```
+
+**Reproducibilidad:** se eliminó el contenedor (`docker rm`) y se volvió a crear con `docker run` desde la
+misma imagen; el sitio quedó disponible sin ejecutar `npm install` ni `npm run dev` en el computador.
 
 ## Autor
 Javier Suárez
