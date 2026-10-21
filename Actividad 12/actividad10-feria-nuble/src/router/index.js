@@ -6,6 +6,7 @@ import ProductoDetalleView from '../views/ProductoDetalleView.vue'
 import FavoritosView from '../views/FavoritosView.vue'
 import ContactoView from '../views/ContactoView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
+import AcercaView from '../views/AcercaView.vue'
 
 const routes = [
   { path: '/', name: 'inicio', component: InicioView },
@@ -13,6 +14,7 @@ const routes = [
   { path: '/productos/:id', name: 'producto-detalle', component: ProductoDetalleView },
   { path: '/favoritos', name: 'favoritos', component: FavoritosView },
   { path: '/contacto', name: 'contacto', component: ContactoView },
+  { path: '/acerca', name: 'acerca', component: AcercaView },
   { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundView }
 ]
 

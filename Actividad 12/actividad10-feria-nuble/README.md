@@ -69,5 +69,43 @@ docker ps -a
 **Reproducibilidad:** se eliminó el contenedor (`docker rm`) y se volvió a crear con `docker run` desde la
 misma imagen; el sitio quedó disponible sin ejecutar `npm install` ni `npm run dev` en el computador.
 
+## Desafío: nueva versión 1.0.1
+**Cambio entre 1.0.0 y 1.0.1:** se agregó la vista **Acerca de** (`src/views/AcercaView.vue`), su ruta
+`/acerca` en `src/router/index.js` y el enlace "Acerca de" en `src/components/Navbar.vue`.
+
+```bash
+docker build -t feria-nuble-vue:1.0.1 .
+docker run -d --name feria-nuble-web-v101 -p 8081:80 feria-nuble-vue:1.0.1
+```
+
+| Versión | URL | ¿Tiene "Acerca de"? |
+|---|---|---|
+| 1.0.0 | http://localhost:8080 | No |
+| 1.0.1 | http://localhost:8081 | Sí |
+
+**Cómo se comprobó:** ambas versiones se ejecutaron al mismo tiempo. El menú de 8081 muestra "Acerca de" y
+`/acerca` abre la vista; en 8080 el menú no tiene el enlace y `/acerca` muestra la página 404. Esto demuestra
+que una imagen es inmutable: el cambio en el código solo aparece al construir una imagen nueva.
+
+## Publicar en Docker Hub (opcional)
+```bash
+docker login
+docker tag feria-nuble-vue:1.0.0 nombreusuario/feria-nuble-vue:1.0.0
+docker push nombreusuario/feria-nuble-vue:1.0.0
+```
+
+## Preguntas de cierre
+- **npm run dev vs npm run build:** `dev` levanta un servidor de desarrollo con recarga automática;
+  `build` genera los archivos optimizados para publicar en `dist/`.
+- **¿Qué contiene dist?** El `index.html`, el JavaScript y CSS compilados y minificados (`assets/`) y lo de `public/` (imágenes).
+- **¿Por qué Nginx y no Vite?** Vite es para desarrollar; Nginx es un servidor web liviano y rápido pensado para producción.
+- **Ventaja del multi-stage:** la imagen final es pequeña y no incluye Node, npm ni el código fuente.
+- **COPY --from=build:** copia a la etapa final solo la carpeta `dist` generada en la etapa de compilación.
+- **-p 8080:80:** el puerto 8080 del computador se redirige al puerto 80 del contenedor, donde escucha Nginx.
+- **¿Por qué try_files?** Para que Nginx devuelva `index.html` en rutas que no son archivos y Vue Router las resuelva.
+- **Si se elimina el contenedor pero no la imagen:** se puede volver a crear el contenedor con `docker run` sin reconstruir.
+- **¿Por qué un cambio requiere nueva imagen?** Porque la imagen es inmutable: guarda el código del momento del build.
+- **Archivos versionados:** `Dockerfile`, `.dockerignore`, `nginx.conf`, el código fuente y el README (no `dist` ni `node_modules`).
+
 ## Autor
 Javier Suárez
