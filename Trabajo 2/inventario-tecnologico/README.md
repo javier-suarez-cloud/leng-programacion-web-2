@@ -81,20 +81,21 @@ frontend/src/          views, services (fetch), router, components
 
 | Prueba | Resultado |
 |---|---|
-| Backend conecta a MySQL y crea la tabla | ☐ |
-| CRUD completo de la API | ☐ |
-| POST inválido da 400 | ☐ |
-| ID inexistente da 404 | ☐ |
-| Los datos siguen al reiniciar el backend | ☐ |
-| Vue lista, crea, edita y elimina (con confirmación) | ☐ |
-| Buscador filtra la lista | ☐ |
-| Con el backend apagado sale mensaje de error | ☐ |
+| Backend conecta a MySQL y crea la tabla | ✔ |
+| CRUD completo de la API | ✔ |
+| POST inválido da 400 | ✔ |
+| ID inexistente da 404 | ✔ |
+| Los datos siguen al reiniciar el backend | ✔ |
+| Vue lista, crea, edita y elimina (con confirmación) | ✔ |
+| Buscador filtra la lista | ✔ |
+| Con el backend apagado sale mensaje de error | ✔ |
 
 La base tiene 5 equipos de prueba.
 
 ## Uso de IA
 
-- **Herramienta:** Claude (Claude Code).
-- **Dónde:** guía de armado del proyecto (backend, frontend y base de datos), basada en las guías de las Actividades 13 y 14, y redacción del README.
-- **Tipo de apoyo:** explicación, generación de código, corrección de errores y documentación.
-- **Lo que hice yo:** copié el código por etapas, lo probé, arreglé errores de configuración y de carpetas, hice los commits y estudié cada archivo para poder explicarlo.
+- **Herramienta:** Claude.
+- **Dónde:** guía de armado del proyecto (backend, frontend y base de datos), en situaciones donde quedaba estancado o me daba muchos errores.
+- **Tipo de apoyo:** explicación, generación de código, corrección de errores.
+- Para ayudarme a escribir este README.
+- **Lo que hice yo:** hice el código por etapas con ayuda de las actividades anteriores, lo probé, arreglé errores de configuración y de carpetas, hice los commits y estudié cada archivo para poder explicarlo.
