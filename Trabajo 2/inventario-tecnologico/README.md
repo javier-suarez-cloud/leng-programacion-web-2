@@ -1,34 +1,20 @@
 # Inventario de Equipamiento Tecnológico
 
-Este proyecto es una aplicación web para guardar y ordenar los equipos tecnológicos de una institución (notebooks, PC, monitores, proyectores, etc.). Así toda la información queda en un solo lugar y se puede ver, agregar, cambiar y borrar equipos.
+App web para llevar el inventario de equipos tecnológicos de una institución: ver, agregar, editar y eliminar equipos.
 
-**Estudiante:** Javier Suarez
+**Estudiante:** Javier Suarez · Lenguaje de Programación Web II · IPVG Chillán 2026-2
 
 ## Tecnologías
 
-- Vue.js 3 con Vite: la parte que ve el usuario (frontend).
-- NestJS 11: el servidor que atiende las peticiones (backend, API REST).
-- TypeORM: conecta el servidor con la base de datos.
-- MySQL 8: donde se guardan los datos.
+Vue 3 (Vite) · NestJS 11 · TypeORM · MySQL 8
 
-## Requisitos de instalación
+## Requisitos
 
-Antes de empezar hay que tener instalado:
+Node.js 24, npm 11, MySQL 8, Nest CLI 11 y Git.
 
-- Node.js 24 y npm 11
-- MySQL 8
-- Nest CLI 11
-- Git
+## Base de datos
 
-## Variables de entorno
-
-Las variables están en el archivo `backend/.env.example`. Para usarlas hay que copiar ese archivo como `backend/.env` y escribir la clave de MySQL en `DB_PASSWORD`.
-
-El archivo `.env` tiene la clave real, por eso no se sube a GitHub.
-
-## Base de datos MySQL
-
-1. Crear la base de datos y darle permisos al usuario (se hace como administrador de MySQL):
+Crear la base y dar permisos (como administrador de MySQL):
 
 ```sql
 CREATE DATABASE inventario_tecnologico CHARACTER SET utf8mb4;
@@ -36,44 +22,79 @@ GRANT ALL ON inventario_tecnologico.* TO 'turismo'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
-2. Copiar `backend/.env.example` como `backend/.env` y completar `DB_PASSWORD` con la clave del usuario de MySQL.
+La tabla `equipos` se crea sola al iniciar el backend (TypeORM, `synchronize: true`).
 
-3. No hay que crear las tablas a mano. Cuando se inicia el backend, TypeORM crea la tabla `equipos` solo, usando la entidad (`synchronize: true`, que sirve para desarrollo).
+## Variables de entorno
 
-Así queda la tabla `equipos`:
+Copiar `backend/.env.example` a `backend/.env` y poner la clave en `DB_PASSWORD`. El `.env` no se sube a GitHub.
 
-| Campo | Tipo | Obligatorio |
-|---|---|---|
-| id | int (autoincremental, clave primaria) | Sí |
-| codigoInventario | varchar(50) | Sí |
-| nombre | varchar(100) | Sí |
-| tipo | varchar(50) | Sí |
-| marca | varchar(50) | Sí |
-| modelo | varchar(50) | Sí |
-| ubicacion | varchar(100) | Sí |
-| estado | varchar(20) | Sí |
-| fechaAdquisicion | date | Sí |
-| observaciones | text | No |
+```
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=turismo
+DB_PASSWORD=
+DB_NAME=inventario_tecnologico
+PORT=3000
+```
 
-## Endpoints de la API
+## Cómo ejecutar
 
-El backend funciona en `http://localhost:3000`.
+Backend (puerto 3000):
 
-| Método | Ruta | Para qué sirve | Respuestas |
+```bash
+cd backend
+npm install
+npm run start
+```
+
+Frontend (puerto 5173):
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Abrir `http://localhost:5173`.
+
+## Endpoints
+
+| Método | Ruta | Qué hace | Respuestas |
 |---|---|---|---|
-| GET | /equipos | Ver todos los equipos | 200 |
-| GET | /equipos/:id | Ver un equipo por su ID | 200, 404 si no existe |
-| POST | /equipos | Registrar un equipo nuevo | 201, 400 si los datos son inválidos |
-| PATCH | /equipos/:id | Cambiar datos de un equipo | 200, 400, 404 |
-| DELETE | /equipos/:id | Eliminar un equipo | 200, 404 |
+| GET | /equipos | Lista todos | 200 |
+| GET | /equipos/:id | Trae uno | 200, 404 |
+| POST | /equipos | Crea uno | 201, 400 |
+| PATCH | /equipos/:id | Actualiza | 200, 400, 404 |
+| DELETE | /equipos/:id | Elimina | 200, 404 |
 
-### Reglas de validación
+Validaciones: código y nombre con mínimo 3 caracteres; tipo, marca, modelo y ubicación no vacíos; estado solo `Disponible`, `En uso`, `Mantención` o `Baja`; fecha válida; observaciones opcional. Campos extra dan 400.
 
-- `codigoInventario` y `nombre`: obligatorios y con mínimo 3 caracteres.
-- `tipo`, `marca`, `modelo` y `ubicacion`: obligatorios, no pueden ir vacíos.
-- `estado`: solo puede ser `Disponible`, `En uso`, `Mantención` o `Baja`.
-- `fechaAdquisicion`: obligatoria y con una fecha válida (por ejemplo `2024-03-15`).
-- `observaciones`: es opcional.
-- Si se envía un campo que no existe en el equipo, la API responde 400 y no lo guarda.
-- Si el ID no existe, la API responde 404.
-- Si el ID no es un número, la API responde 400.
+## Estructura
+
+```
+backend/src/equipos/   dto, entities, controller, service, module
+backend/src/           app.module.ts (conexión MySQL), main.ts (ValidationPipe, CORS)
+frontend/src/          views, services (fetch), router, components
+```
+
+## Pruebas
+
+| Prueba | Resultado |
+|---|---|
+| Backend conecta a MySQL y crea la tabla | ☐ |
+| CRUD completo de la API | ☐ |
+| POST inválido da 400 | ☐ |
+| ID inexistente da 404 | ☐ |
+| Los datos siguen al reiniciar el backend | ☐ |
+| Vue lista, crea, edita y elimina (con confirmación) | ☐ |
+| Buscador filtra la lista | ☐ |
+| Con el backend apagado sale mensaje de error | ☐ |
+
+La base tiene 5 equipos de prueba.
+
+## Uso de IA
+
+- **Herramienta:** Claude (Claude Code).
+- **Dónde:** guía de armado del proyecto (backend, frontend y base de datos), basada en las guías de las Actividades 13 y 14, y redacción del README.
+- **Tipo de apoyo:** explicación, generación de código, corrección de errores y documentación.
+- **Lo que hice yo:** copié el código por etapas, lo probé, arreglé errores de configuración y de carpetas, hice los commits y estudié cada archivo para poder explicarlo.
